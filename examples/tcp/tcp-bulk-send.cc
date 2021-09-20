@@ -41,7 +41,7 @@ int
 main (int argc, char *argv[])
 {
 
-  bool tracing = false;
+  bool tracing = true;
   uint32_t maxBytes = 0;
 
 //

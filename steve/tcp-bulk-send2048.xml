@@ -1,0 +1,58 @@
+<anim ver="netanim-3.108" filetype="animation" >
+<node id="0" sysId="0" locX="0" locY="0" />
+<node id="1" sysId="0" locX="0" locY="0" />
+<nu p="c" t="0" id="0" r="255" g="0" b="0" />
+<nu p="c" t="0" id="1" r="255" g="0" b="0" />
+<link fromId="0" toId="1" fd="10.1.1.1~00:00:00:00:00:01" td="10.1.1.2~00:00:00:00:00:02" ld="" />
+<nonp2plinkproperties id="0" ipAddress="127.0.0.1~00:00:00:00:00:00" channelType="Unknown channel" />
+<nonp2plinkproperties id="1" ipAddress="127.0.0.1~00:00:00:00:00:00" channelType="Unknown channel" />
+<ip n="0" >
+<address >10.1.1.1</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="0" >
+<address >10.1.1.1</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="1" >
+<address >10.1.1.2</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="1" >
+<address >10.1.1.2</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ipv6 n="0" >
+<address >::1</address>
+
+</ipv6>
+<ipv6 n="1" >
+<address >::1</address>
+
+</ipv6>
+<nu p="s" t="0" id="0" w="1" h="1" />
+<nu p="s" t="0" id="1" w="1" h="1" />
+<ncs ncId="0" n="RemainingEnergy" t="DOUBLE" />
+<nu p="p" t="0" id="0" x="10" y="10" />
+<nu p="p" t="0" id="1" x="30" y="10" />
+<p fId="0" fbTx="0" lbTx="0.000464" tId="1" fbRx="2e-06" lbRx="0.000466" />
+<p fId="1" fbTx="0.000466" lbTx="0.00093" tId="0" fbRx="0.000468" lbRx="0.000932" />
+<p fId="0" fbTx="0.000932" lbTx="0.001428" tId="1" fbRx="0.000934" lbRx="0.00143" />
+<p fId="0" fbTx="0.001428" lbTx="0.006339999" tId="1" fbRx="0.00143" lbRx="0.006341999" />
+<p fId="1" fbTx="0.00143" lbTx="0.001861999" tId="0" fbRx="0.001432" lbRx="0.001863999" />
+<p fId="1" fbTx="0.006341999" lbTx="0.006741999" tId="0" fbRx="0.006343999" lbRx="0.006743999" />
+<p fId="0" fbTx="1.006744" lbTx="1.011144" tId="1" fbRx="1.006746" lbRx="1.011146" />
+<p fId="1" fbTx="1.011146" lbTx="1.011546" tId="0" fbRx="1.011148" lbRx="1.011548" />
+<p fId="0" fbTx="1.011548002" lbTx="1.016332002" tId="1" fbRx="1.011550002" lbRx="1.016334002" />
+<p fId="1" fbTx="1.016334002" lbTx="1.016734002" tId="0" fbRx="1.016336002" lbRx="1.016736002" />
+<p fId="0" fbTx="2.016736003" lbTx="2.021136003" tId="1" fbRx="2.016738003" lbRx="2.021138003" />
+<p fId="1" fbTx="2.021138003" lbTx="2.021538003" tId="0" fbRx="2.021140003" lbRx="2.021540003" />
+</anim>

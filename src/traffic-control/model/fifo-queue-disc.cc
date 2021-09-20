@@ -38,7 +38,7 @@ TypeId FifoQueueDisc::GetTypeId (void)
     .AddConstructor<FifoQueueDisc> ()
     .AddAttribute ("MaxSize",
                    "The max queue size",
-                   QueueSizeValue (QueueSize ("1000p")),
+                   QueueSizeValue (QueueSize ("2000p")),
                    MakeQueueSizeAccessor (&QueueDisc::SetMaxSize,
                                           &QueueDisc::GetMaxSize),
                    MakeQueueSizeChecker ())

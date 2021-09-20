@@ -1,0 +1,100 @@
+<anim ver="netanim-3.108" filetype="animation" >
+<node id="0" sysId="0" locX="0" locY="0" />
+<node id="1" sysId="0" locX="0" locY="0" />
+<nu p="c" t="0" id="0" r="255" g="0" b="0" />
+<nu p="c" t="0" id="1" r="255" g="0" b="0" />
+<link fromId="0" toId="1" fd="10.1.1.1~00:00:00:00:00:01" td="10.1.1.2~00:00:00:00:00:02" ld="" />
+<link fromId="0" toId="1" fd="10.1.2.1~00:00:00:00:00:03" td="10.1.2.2~00:00:00:00:00:04" ld="" />
+<nonp2plinkproperties id="0" ipAddress="127.0.0.1~00:00:00:00:00:00" channelType="Unknown channel" />
+<nonp2plinkproperties id="1" ipAddress="127.0.0.1~00:00:00:00:00:00" channelType="Unknown channel" />
+<ip n="0" >
+<address >10.1.1.1</address>
+
+<address >10.1.2.1</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="0" >
+<address >10.1.1.1</address>
+
+<address >10.1.2.1</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="0" >
+<address >10.1.1.1</address>
+
+<address >10.1.2.1</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="1" >
+<address >10.1.1.2</address>
+
+<address >10.1.2.2</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="1" >
+<address >10.1.1.2</address>
+
+<address >10.1.2.2</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ip n="1" >
+<address >10.1.1.2</address>
+
+<address >10.1.2.2</address>
+
+<address >127.0.0.1</address>
+
+</ip>
+<ipv6 n="0" >
+<address >::1</address>
+
+</ipv6>
+<ipv6 n="1" >
+<address >::1</address>
+
+</ipv6>
+<nu p="s" t="0" id="0" w="1" h="1" />
+<nu p="s" t="0" id="1" w="1" h="1" />
+<ncs ncId="0" n="RemainingEnergy" t="DOUBLE" />
+<nu p="p" t="0" id="0" x="2" y="0" />
+<nu p="p" t="0" id="1" x="20" y="0" />
+<p fId="0" fbTx="0" lbTx="4.639e-06" tId="1" fbRx="0.001" lbRx="0.001004639" />
+<p fId="1" fbTx="0.001004639" lbTx="0.001009278" tId="0" fbRx="0.002004639" lbRx="0.002009278" />
+<p fId="0" fbTx="0.002009278" lbTx="0.002014237" tId="1" fbRx="0.003009278" lbRx="0.003014237" />
+<p fId="0" fbTx="0.002014237" lbTx="0.002102396" tId="1" fbRx="0.003014237" lbRx="0.003102396" />
+<p fId="1" fbTx="0.003014237" lbTx="0.003019196" tId="0" fbRx="0.004014237" lbRx="0.004019196" />
+<p fId="1" fbTx="0.003102396" lbTx="0.003106395" tId="0" fbRx="0.004102396" lbRx="0.004106395" />
+<p fId="0" fbTx="0.004106396" lbTx="0.004111035" tId="1" fbRx="0.005106396" lbRx="0.005111035" />
+<p fId="0" fbTx="0.004106396" lbTx="0.004111035" tId="1" fbRx="0.005106396" lbRx="0.005111035" />
+<p fId="0" fbTx="0.004111035" lbTx="0.004115674" tId="1" fbRx="0.005111035" lbRx="0.005115674" />
+<p fId="0" fbTx="0.004111035" lbTx="0.004197915" tId="1" fbRx="0.005111035" lbRx="0.005197915" />
+<p fId="1" fbTx="0.005111035" lbTx="0.005115994" tId="0" fbRx="0.006111035" lbRx="0.006115994" />
+<p fId="1" fbTx="0.005111035" lbTx="0.005115994" tId="0" fbRx="0.006111035" lbRx="0.006115994" />
+<p fId="1" fbTx="0.005115994" lbTx="0.005120953" tId="0" fbRx="0.006115994" lbRx="0.006120953" />
+<p fId="1" fbTx="0.005115994" lbTx="0.005120953" tId="0" fbRx="0.006115994" lbRx="0.006120953" />
+<p fId="1" fbTx="0.005120953" lbTx="0.005125912" tId="0" fbRx="0.006120953" lbRx="0.006125912" />
+<p fId="1" fbTx="0.005125912" lbTx="0.005130871" tId="0" fbRx="0.006125912" lbRx="0.006130871" />
+<p fId="1" fbTx="0.005197915" lbTx="0.005201914" tId="0" fbRx="0.006197915" lbRx="0.006201914" />
+<p fId="0" fbTx="0.006115994" lbTx="0.006119353" tId="1" fbRx="0.007115994" lbRx="0.007119353" />
+<p fId="0" fbTx="0.006115994" lbTx="0.006119353" tId="1" fbRx="0.007115994" lbRx="0.007119353" />
+<p fId="0" fbTx="0.006120953" lbTx="0.006124312" tId="1" fbRx="0.007120953" lbRx="0.007124312" />
+<p fId="0" fbTx="0.006201916" lbTx="0.006288476" tId="1" fbRx="0.007201916" lbRx="0.007288476" />
+<p fId="1" fbTx="0.007119353" lbTx="0.007124312" tId="0" fbRx="0.008119353" lbRx="0.008124312" />
+<p fId="1" fbTx="0.007124312" lbTx="0.007129271" tId="0" fbRx="0.008124312" lbRx="0.008129271" />
+<p fId="1" fbTx="0.007129271" lbTx="0.00713423" tId="0" fbRx="0.008129271" lbRx="0.00813423" />
+<p fId="1" fbTx="0.007288476" lbTx="0.007292475" tId="0" fbRx="0.008288476" lbRx="0.008292475" />
+<p fId="0" fbTx="0.008292477" lbTx="0.008379037" tId="1" fbRx="0.009292477" lbRx="0.009379037" />
+<p fId="1" fbTx="0.009379037" lbTx="0.009383036" tId="0" fbRx="0.010379037" lbRx="0.010383036" />
+<p fId="0" fbTx="0.010383038" lbTx="0.010459997" tId="1" fbRx="0.011383038" lbRx="0.011459997" />
+<p fId="1" fbTx="0.011459997" lbTx="0.011463996" tId="0" fbRx="0.012459997" lbRx="0.012463996" />
+</anim>

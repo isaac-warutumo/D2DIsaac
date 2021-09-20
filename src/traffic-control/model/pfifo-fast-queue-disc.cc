@@ -41,7 +41,7 @@ TypeId PfifoFastQueueDisc::GetTypeId (void)
     .AddConstructor<PfifoFastQueueDisc> ()
     .AddAttribute ("MaxSize",
                    "The maximum number of packets accepted by this queue disc.",
-                   QueueSizeValue (QueueSize ("1000p")),
+                   QueueSizeValue (QueueSize ("2000p")),
                    MakeQueueSizeAccessor (&QueueDisc::SetMaxSize,
                                           &QueueDisc::GetMaxSize),
                    MakeQueueSizeChecker ())

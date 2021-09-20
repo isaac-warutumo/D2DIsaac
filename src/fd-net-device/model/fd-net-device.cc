@@ -112,7 +112,7 @@ FdNetDevice::GetTypeId (void)
                    "This value limits number of packets that have been read "
                    "from the network into a memory buffer but have not yet "
                    "been processed by the simulator.",
-                   UintegerValue (1000),
+                   UintegerValue (2000),
                    MakeUintegerAccessor (&FdNetDevice::m_maxPendingReads),
                    MakeUintegerChecker<uint32_t> ())
     //

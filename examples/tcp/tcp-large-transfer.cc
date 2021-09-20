@@ -142,7 +142,7 @@ int main (int argc, char *argv[])
   apps.Stop (Seconds (3.0));
 
   // Create a source to send packets from n0.  Instead of a full Application
-  // and the helper APIs you might see in other example files, this example
+   // and the helper APIs you might see in other example files, this example
   // will use sockets directly and register some socket callbacks as a sending
   // "Application".
 

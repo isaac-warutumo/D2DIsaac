@@ -51,7 +51,7 @@ TcpRxBuffer::GetTypeId (void)
  * initialized below is insignificant.
  */
 TcpRxBuffer::TcpRxBuffer (uint32_t n)
-  : m_nextRxSeq (n), m_gotFin (false), m_size (0), m_maxBuffer (32768), m_availBytes (0)
+  : m_nextRxSeq (n), m_gotFin (false), m_size (0), m_maxBuffer (65536), m_availBytes (0)
 {
 }
 

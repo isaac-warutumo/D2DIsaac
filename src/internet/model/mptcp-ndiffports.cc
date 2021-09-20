@@ -39,7 +39,7 @@ NS_OBJECT_ENSURE_REGISTERED (MpTcpNdiffPorts);
 TypeId
 MpTcpNdiffPorts::GetTypeId (void)
 {
-  static TypeId tid = TypeId ("ns::MpTcpNdiffPorts")
+  static TypeId tid = TypeId ("ns3::MpTcpNdiffPorts")
     .SetParent<Object> ()
     .SetGroupName ("Internet")
     .AddConstructor<MpTcpNdiffPorts> ()
