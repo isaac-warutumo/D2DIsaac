@@ -82,7 +82,7 @@ main (int argc, char *argv[])
 
   Simulator::Run ();
   Simulator::Destroy();
-  /* Simulator::Destroy (); */
+ 
   
   monitor->CheckForLostPackets ();
   Ptr<Ipv4FlowClassifier> classifier = DynamicCast<Ipv4FlowClassifier> (flowmon.GetClassifier ());
