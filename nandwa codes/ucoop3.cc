@@ -4,7 +4,6 @@
 #include <ns3/applications-module.h>
 #include <ns3/internet-module.h>
 #include <ns3/mobility-module.h>
-#include <ns3/lte-module.h>
 #include <ns3/lte-helper.h>
 #include <ns3/epc-helper.h>
 #include <ns3/ipv4-global-routing-helper.h>
@@ -20,7 +19,6 @@
 #include <string>
 #include <cassert>
 #include "ns3/flow-monitor-helper.h"
-#include "ns3/ipv4-global-routing-helper.h"
 #include "ns3/packet-sink.h"
 #include "ns3/simulator.h"
 #include "ns3/tcp-l4-protocol.h"
@@ -37,7 +35,7 @@ main (int argc, char *argv[])
 {
 
   double lat = 2.0;
-  uint64_t rate = 500000;
+  uint64_t rate = 5000000;
   double interval = 0.05;
   double simulation_time = 10.0;
   bool verbose = true;
@@ -63,7 +61,7 @@ main (int argc, char *argv[])
   NS_LOG_INFO ("Create nodes.");
   NodeContainer enbNodes;
   NodeContainer ueNodes;
-  enbNodes.Create (2);
+  enbNodes.Create (1);
   ueNodes.Create (4);
 
   MobilityHelper mobility;
@@ -98,9 +96,14 @@ main (int argc, char *argv[])
 
   NS_LOG_INFO ("Create Channels");
 
-  YansWifiChannelHelper channel = YansWifiChannelHelper::Default ();
-  YansWifiPhyHelper phy;
-  phy.SetChannel (channel.Create ());
+YansWifiChannelHelper channel = YansWifiChannelHelper::Default();
+//channel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
+//channel.AddPropagationLoss("ns3::FriisPropagationLossModel","MinLoss",DoubleValue(250));
+
+
+YansWifiPhyHelper phy = YansWifiPhyHelper::Default ();;
+phy.SetChannel(channel.Create());
+
 
   WifiHelper wifi;
   wifi.SetRemoteStationManager ("ns3::ArfWifiManager");
@@ -115,7 +118,7 @@ main (int argc, char *argv[])
   NetDeviceContainer staDevices;
   staDevices = wifi.Install (phy, mac, ueNodes);
 
-  mac.SetType ("ns3::ApWifiMac", "Ssid", SsidValue (ssid), "BeaconGeneration", BooleanValue (true));
+  mac.SetType ("ns3::ApWifiMac", "Ssid", SsidValue (ssid), "BeaconGeneration", BooleanValue (false));
 
   NetDeviceContainer apDevices;
   apDevices = wifi.Install (phy, mac, enbNodes);
@@ -221,10 +224,10 @@ main (int argc, char *argv[])
   apps1 = server1.Install (enbNodes.Get (0));
   apps2 = server2.Install (enbNodes.Get (0));
 
-  apps1.Start (NanoSeconds (1.0));
+  apps1.Start (Seconds (1.0));
   apps1.Stop (Seconds (simulation_time));
 
-  apps2.Start (NanoSeconds (1.0));
+  apps2.Start (Seconds (1.0));
   apps2.Stop (Seconds (simulation_time));
 
   uint32_t MaxPacketSize = 500;
@@ -247,9 +250,9 @@ main (int argc, char *argv[])
   apps1 = client1.Install (ueNodes.Get (0));
   apps2 = client2.Install (ueNodes.Get (1));
 
-  apps1.Start (NanoSeconds (2.0));
+  apps1.Start (Seconds (2.0));
   apps1.Stop (Seconds (simulation_time));
-  apps2.Start (NanoSeconds (2.0));
+  apps2.Start (Seconds (2.0));
   apps2.Stop (Seconds (simulation_time));
 
   client3.SetAttribute ("MaxPackets", UintegerValue (maxPacketCount));
@@ -263,9 +266,9 @@ main (int argc, char *argv[])
   apps1 = client3.Install (ueNodes.Get (2));
   apps2 = client4.Install (ueNodes.Get (3));
 
-  apps1.Start (NanoSeconds (2.0));
+  apps1.Start (Seconds (2.0));
   apps1.Stop (Seconds (simulation_time));
-  apps2.Start (NanoSeconds (2.0));
+  apps2.Start (Seconds (2.0));
   apps2.Stop (Seconds (simulation_time));
 
   AnimationInterface anim ("ucoop3.xml");

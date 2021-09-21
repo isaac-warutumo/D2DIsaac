@@ -33,7 +33,11 @@
 #include "ns3/network-module.h"
 #include "ns3/packet-sink.h"
 #include "ns3/netanim-module.h"
-#include <ns3/mobility-module.h>
+#include "ns3/mobility-module.h" 
+#include "ns3/config-store-module.h"
+#include "ns3/flow-monitor.h"
+#include "ns3/flow-monitor-helper.h"
+#include "ns3/flow-monitor-module.h"
 
 using namespace ns3;
 
@@ -42,19 +46,16 @@ NS_LOG_COMPONENT_DEFINE ("TcpBulkSendExample");
 int
 main (int argc, char *argv[])
 {
-
-  bool tracing = true;
-  uint32_t maxBytes = 512;
+Config::SetDefault ("ns3::BulkSendApplication::SendSize", UintegerValue (1024));
+ //ns3::BulkSendApplication::SendSize "1128" //512 
+  uint32_t maxBytes = 1048576;//1MBs
+  
 
 //
 // Allow the user to override any of the defaults at
 // run-time, via command-line arguments
 //
-  CommandLine cmd;
-  cmd.AddValue ("tracing", "Flag to enable/disable tracing", tracing);
-  cmd.AddValue ("maxBytes",
-                "Total number of bytes for application to send", maxBytes);
-  cmd.Parse (argc, argv);
+
 
 //
 // Explicitly create the nodes required by the topology (shown above).
@@ -62,13 +63,13 @@ main (int argc, char *argv[])
   NS_LOG_INFO ("Create nodes.");
   NodeContainer nodes;
   nodes.Create (2);
-  
-  
- 
- MobilityHelper mobility;
-  mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  mobility.Install(nodes);
-  
+
+
+MobilityHelper mobility;
+mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+mobility.Install(nodes);
+
+
 
   NS_LOG_INFO ("Create channels.");
 
@@ -76,8 +77,8 @@ main (int argc, char *argv[])
 // Explicitly create the point-to-point link required by the topology (shown above).
 //
   PointToPointHelper pointToPoint;
-  pointToPoint.SetDeviceAttribute ("DataRate", StringValue ("500Kbps"));
-  pointToPoint.SetChannelAttribute ("Delay", StringValue ("5ms"));
+  pointToPoint.SetDeviceAttribute ("DataRate", StringValue ("10Mbps"));
+  pointToPoint.SetChannelAttribute ("Delay", StringValue ("2ns"));
 
   NetDeviceContainer devices;
   devices = pointToPoint.Install (nodes);
@@ -108,9 +109,11 @@ main (int argc, char *argv[])
                          InetSocketAddress (i.GetAddress (1), port));
   // Set the amount of data to send in bytes.  Zero is unlimited.
   source.SetAttribute ("MaxBytes", UintegerValue (maxBytes));
+  //source.SetAttribute ("PacketSize", UintegerValue (1024));
+  //
   ApplicationContainer sourceApps = source.Install (nodes.Get (0));
-  sourceApps.Start (Seconds (0.0));
-  sourceApps.Stop (Seconds (10.0));
+  sourceApps.Start (NanoSeconds (1.0));
+  sourceApps.Stop (Seconds (20.0));
 
 //
 // Create a PacketSinkApplication and install it on node 1
@@ -118,33 +121,49 @@ main (int argc, char *argv[])
   PacketSinkHelper sink ("ns3::TcpSocketFactory",
                          InetSocketAddress (Ipv4Address::GetAny (), port));
   ApplicationContainer sinkApps = sink.Install (nodes.Get (1));
-  sinkApps.Start (Seconds (0.0));
-  sinkApps.Stop (Seconds (10.0));
+  sinkApps.Start (NanoSeconds (2.0));
+  sinkApps.Stop (Seconds (20.0));
 
 //
 // Set up tracing if enabled
 //
-  if (tracing)
-    {
-      AsciiTraceHelper ascii;
-      pointToPoint.EnableAsciiAll (ascii.CreateFileStream ("tcp-bulk-send.tr"));
-      pointToPoint.EnablePcapAll ("tcp-bulk-send", true);
-    }
-AnimationInterface anim ("tcp.xml");
+AsciiTraceHelper ascii;
+Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream ("trace-file-name.tr");
+pointToPoint.EnableAscii (stream, devices);
  
-// NodeContainer for spine switches
-	  	
-		anim.SetConstantPosition(nodes.Get(0), 2.0, 0.0);
-		anim.SetConstantPosition(nodes.Get(1), 20.0, 0.0);
+      
+      //pointToPoint.EnableAsciiAll (ascii.CreateFileStream ("tcp-bulk-send1024000.tr"));
+      //pointToPoint.EnablePcapAll ("tcp-bulk-send1024000");
+  //ipv4.EnableAsciiIpv4All ("tcp-bulk-send1024000.tr");
+  
+AnimationInterface anim("tcp-bulk-send1024000.xml");
+  anim.SetConstantPosition (nodes.Get(0), 10.0, 10.0);
+  anim.SetConstantPosition (nodes.Get(1), 30.0, 10.0);
+  
+ Ptr <FlowMonitor>  flowMonitor;
+ FlowMonitorHelper flowHelper;
+ flowMonitor = flowHelper.InstallAll();  
+  
+Config::SetDefault ("ns3::ConfigStore::Filename", StringValue ("output-attributestcpbulksend1024000.txt"));
+  Config::SetDefault ("ns3::ConfigStore::FileFormat", StringValue ("RawText"));
+  Config::SetDefault ("ns3::ConfigStore::Mode", StringValue ("Save"));
+  ConfigStore outputConfig2;
+  outputConfig2.ConfigureDefaults ();
+  outputConfig2.ConfigureAttributes ();
+  
+  
 //
 // Now, do the actual simulation.
 //
   NS_LOG_INFO ("Run Simulation.");
-  Simulator::Stop (Seconds (10.0));
+  Simulator::Stop (Seconds (20.0));
   Simulator::Run ();
+  
+  flowMonitor->SerializeToXmlFile("tcp-bulk-sendflow.xml", true, true);
+  
   Simulator::Destroy ();
   NS_LOG_INFO ("Done.");
 
-  Ptr<PacketSink> sink1 = DynamicCast<PacketSink> (sinkApps.Get (1));
+  Ptr<PacketSink> sink1 = DynamicCast<PacketSink> (sinkApps.Get (0));
   std::cout << "Total Bytes Received: " << sink1->GetTotalRx () << std::endl;
 }
