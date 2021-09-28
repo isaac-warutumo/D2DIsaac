@@ -30,6 +30,7 @@
 #include "ns3/point-to-point-helper.h"
 #include "ns3/config-store.h"
 //#include "ns3/gtk-config-store.h"
+#include "ns3/netanim-module.h"
 
 using namespace ns3;
 
@@ -189,20 +190,20 @@ main (int argc, char *argv[])
   lteHelper->EnableTraces ();
   
 AsciiTraceHelper ascii;
-p2p.EnableAsciiAll (ascii.CreateFileStream ("lte-simple-epc.tr"));
+p2ph.EnableAsciiAll (ascii.CreateFileStream ("lte-simple-epc.tr"));
                                                                                
 
-AnimationInterface anim ("lte-simple-epc.xml");
+// AnimationInterface anim ("lte-simple-epc.xml");
  
-  //NodeContainer for spine switches
+//   //NodeContainer for spine switches
 	  	
-		anim.SetConstantPosition(ueNodes.Get(0), 0.0, 20.0);
-		//anim.SetConstantPosition(relay.Get(1), 25.0, 20.0);
-		//anim.SetConstantPosition(ueNodes.Get(1), 75.0, 20.0);
-		anim.SetConstantPosition(remoteHostContainer.Get (0), 100.0, 0.0);
-		//anim.SetConstantPosition(pgw.Get (0), 75.0, 0.0);
-		anim.SetConstantPosition(enbNodes.Get(0), 50.0, 0.0);
-		//anim.SetConstantPosition(host.Get(1), 50.0 , 100.0);  
+// 		anim.SetConstantPosition(ueNodes.Get(0), 0.0, 20.0);
+// 		//anim.SetConstantPosition(relay.Get(1), 25.0, 20.0);
+// 		//anim.SetConstantPosition(ueNodes.Get(1), 75.0, 20.0);
+// 		anim.SetConstantPosition(remoteHostContainer.Get (0), 100.0, 0.0);
+// 		//anim.SetConstantPosition(pgw.Get (0), 75.0, 0.0);
+// 		anim.SetConstantPosition(enbNodes.Get(0), 50.0, 0.0);
+// 		//anim.SetConstantPosition(host.Get(1), 50.0 , 100.0);  
   
   // Uncomment to enable PCAP tracing
   //p2ph.EnablePcapAll("lena-epc-first");

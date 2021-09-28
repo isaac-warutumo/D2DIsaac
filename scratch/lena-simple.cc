@@ -25,7 +25,7 @@
 #include "ns3/config-store.h"
 #include <ns3/buildings-helper.h>
 //#include "ns3/gtk-config-store.h"
-//#include "ns3/netanim-module.h"
+#include "ns3/netanim-module.h"
 
 using namespace ns3;
 
@@ -98,9 +98,14 @@ main (int argc, char *argv[])
   lteHelper->ActivateDataRadioBearer (ueDevs, bearer);
   lteHelper->EnableTraces ();
 
-  // AnimationInterface anim("netanim/my_simple_lte.xml");
-  // anim.SetConstantPosition(ueNodes.Get(0),10,10);
-  // anim.SetConstantPosition(enbNodes.Get(0), 0,0);
+  AnimationInterface anim ("netanim/my_lena_simple.xml");
+  anim.SetConstantPosition (ueNodes.Get (0), 0, 20.0);
+  anim.SetConstantPosition (enbNodes.Get (0), 25.0, 20.0);
+
+  AsciiTraceHelper ascii;
+  ascii.CreateFileStream("tracemetrics/my_lena_simple.tr");
+
+
   Simulator::Stop (Seconds (1.05));
 
   Simulator::Run ();

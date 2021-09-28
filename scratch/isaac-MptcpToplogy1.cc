@@ -23,6 +23,7 @@
 
 #include "ns3/enum.h"
 #include "ns3/config-store-module.h"
+#include "ns3/isaac-module.h"
 
 using namespace ns3;
 
@@ -39,20 +40,28 @@ main (int argc, char *argv[])
   //Enable MPTCP
   Config::SetDefault ("ns3::TcpSocketBase::EnableMpTcp", BooleanValue (true));
   Config::SetDefault ("ns3::MpTcpSocketBase::PathManagerMode",
-                      EnumValue (MpTcpSocketBase::FullMesh));
+                      EnumValue (MpTcpSocketBase::nDiffPorts));
   Config::SetDefault ("ns3::MpTcpNdiffPorts::MaxSubflows", UintegerValue (2));
 
   //Variables Declaration
   uint16_t port = 999;
-  uint32_t maxBytes = 1048576;
+  uint32_t maxBytes = 1048576; //1MBs
+
+  int clusterNodes = 0;
+  int activeRelays = 0;
+  // initialize a cluster
+  Cluster myCluster;
+  clusterNodes = myCluster.GenerateClusterNodes (); //random number of nodes in a cluster
+  std::cout << "My Cluster has :" << clusterNodes << " nodes\n";
+  std::cout << "My Cluster has :" << myCluster.GenerateActiveRelays (clusterNodes) << " relays\n";
 
   //Initialize Internet Stack and Routing Protocols
-
   InternetStackHelper internet;
   Ipv4AddressHelper ipv4;
 
   //creating routers, source and destination. Installing internet stack
   NodeContainer host; // NodeContainer for source and destination
+
   host.Create (2);
   internet.Install (host);
   //enb
@@ -66,14 +75,14 @@ main (int argc, char *argv[])
 
   MobilityHelper mobility;
 
-  mobility.SetPositionAllocator ("ns3::GridPositionAllocator", "MinX", DoubleValue (0.0), "MinY",
+  /* mobility.SetPositionAllocator ("ns3::GridPositionAllocator", "MinX", DoubleValue (0.0), "MinY",
                                  DoubleValue (0.0), "DeltaX", DoubleValue (5.0), "DeltaY",
                                  DoubleValue (10.0), "GridWidth", UintegerValue (3), "LayoutType",
                                  StringValue ("RowFirst"));
 
   mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel", "Bounds",
                              RectangleValue (Rectangle (-100, 100, -100, 100)));
-  mobility.Install (relay);
+  mobility.Install (relay); */
 
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
   mobility.Install (enb);
@@ -167,13 +176,12 @@ main (int argc, char *argv[])
 
   //=========== Start the simulation ===========//
 
-  std::cout << "Start Simulation.. "
-            << "\n";
+  std::cout << "Start Simulation.\n ";
 
-//tracemetrics trace file
+  //tracemetrics trace file
   AsciiTraceHelper ascii;
   p2p.EnableAsciiAll (ascii.CreateFileStream ("tracemetrics/isaac-mptcp-1048576.tr"));
-  
+
   ////////////////////////// Use of NetAnim model/////////////////////////////////////////
   AnimationInterface anim ("netanim/mptcp-1048576.xml");
 
@@ -195,7 +203,7 @@ main (int argc, char *argv[])
   outputConfig2.ConfigureDefaults ();
   outputConfig2.ConfigureAttributes ();
 
-//flowmon tracefiles
+  //flowmon tracefiles
   FlowMonitorHelper flowmon;
   Ptr<FlowMonitor> monitor = flowmon.InstallAll ();
 
