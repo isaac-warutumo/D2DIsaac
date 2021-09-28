@@ -47,13 +47,14 @@ main (int argc, char *argv[])
   uint16_t port = 999;
   uint32_t maxBytes = 1048576; //1MBs
 
-  int clusterNodes = 0;
-  int activeRelays = 0;
+  size_t clusterNodes = 0;
+  size_t activeRelays = 0;
   // initialize a cluster
   Cluster myCluster;
   clusterNodes = myCluster.GenerateClusterNodes (); //random number of nodes in a cluster
+  activeRelays = myCluster.GenerateActiveRelays (clusterNodes);
   std::cout << "My Cluster has :" << clusterNodes << " nodes\n";
-  std::cout << "My Cluster has :" << myCluster.GenerateActiveRelays (clusterNodes) << " relays\n";
+  std::cout << "My Cluster has :" << activeRelays << " relays\n";
 
   //Initialize Internet Stack and Routing Protocols
   InternetStackHelper internet;
@@ -68,9 +69,10 @@ main (int argc, char *argv[])
   NodeContainer enb;
   enb.Create (1);
   internet.Install (enb);
+
   // relay
   NodeContainer relay; // NodeContainer for relay
-  relay.Create (3);
+  relay.Create (activeRelays);
   internet.Install (relay);
 
   MobilityHelper mobility;
@@ -88,67 +90,57 @@ main (int argc, char *argv[])
   mobility.Install (enb);
   mobility.Install (host);
   mobility.Install (relay);
-  /////////////////////creating toplogy////////////////
 
-  //connecting routers and hosts and assign ip addresses
-
-  NodeContainer e0r0 = NodeContainer (enb.Get (0), relay.Get (0));
-  NodeContainer e0r1 = NodeContainer (enb.Get (0), relay.Get (1));
-  NodeContainer e0r2 = NodeContainer (enb.Get (0), relay.Get (2));
+  /////////////////////creating topology////////////////
+  NodeContainer *e0Ri = new NodeContainer[activeRelays];
+  NodeContainer *riH1 = new NodeContainer[activeRelays];
+  
   NodeContainer e0h0 = NodeContainer (enb.Get (0), host.Get (0));
 
-  NodeContainer r0h1 = NodeContainer (relay.Get (0), host.Get (1));
-  NodeContainer r1h1 = NodeContainer (relay.Get (1), host.Get (1));
-  NodeContainer r2h1 = NodeContainer (host.Get (1), relay.Get (2));
+  NetDeviceContainer *chiE0Ri = new NetDeviceContainer[activeRelays];
 
-  //NodeContainer h1r3 = NodeContainer (host.Get (1), relay.Get (3));
-  //NodeContainer r0r1 = NodeContainer (router.Get (0), router.Get (1));
-  //We create the channels first without any IP addressing information
-
+  //loop through the relays
+  for (size_t i = 0; i < activeRelays; i++)
+    {
+      e0Ri[i] = NodeContainer (enb.Get (0), relay.Get (i));
+      riH1[i] = NodeContainer ( host.Get (1),relay.Get (i));
+    }
   NS_LOG_INFO ("Create channels.");
 
   PointToPointHelper p2p;
 
   p2p.SetDeviceAttribute ("DataRate", StringValue ("10Mbps"));
   p2p.SetChannelAttribute ("Delay", StringValue ("1ns"));
-  NetDeviceContainer l0e0r0 = p2p.Install (e0r0);
-  NetDeviceContainer l1e0r1 = p2p.Install (e0r1);
-  NetDeviceContainer l2e0r2 = p2p.Install (e0r2);
+
+  NS_LOG_INFO ("Assign IP Addresses.");
+  Ipv4InterfaceContainer *intfiE0Ri = new Ipv4InterfaceContainer[activeRelays];
+  ipv4.SetBase ("10.1.2.0", "255.255.255.0");
+  for (size_t i = 0; i < activeRelays; i++)
+    {
+      chiE0Ri[i] = p2p.Install (e0Ri[i]);
+      intfiE0Ri[i] = ipv4.Assign (chiE0Ri[i]);
+    }
+
   p2p.SetDeviceAttribute ("DataRate", StringValue ("1Gbps"));
   p2p.SetChannelAttribute ("Delay", StringValue ("1ns"));
-  NetDeviceContainer l4e0h0 = p2p.Install (e0h0);
+  NetDeviceContainer ch4e0h0 = p2p.Install (e0h0);
 
   p2p.SetDeviceAttribute ("DataRate", StringValue ("1Gbps"));
   p2p.SetChannelAttribute ("Delay", StringValue ("1ns"));
 
-  NetDeviceContainer l5r0h1 = p2p.Install (r0h1);
-  NetDeviceContainer l6r1h1 = p2p.Install (r1h1);
-  NetDeviceContainer l7r2h1 = p2p.Install (r2h1);
+  NetDeviceContainer *chiRiH1 = new NetDeviceContainer[activeRelays];
+  Ipv4InterfaceContainer *intfiRiH1 = new Ipv4InterfaceContainer[activeRelays];
+  ipv4.SetBase ("10.1.1.0", "255.255.255.0");
+  for (size_t i = 0; i < activeRelays; i++)
+    {
+      chiRiH1[i] = p2p.Install (riH1[i]);
+      intfiRiH1[i] = ipv4.Assign (chiRiH1[i]);
+    }
 
   //Later, we add IP addresses.
-  NS_LOG_INFO ("Assign IP Addresses.");
-
-  ipv4.SetBase ("10.1.1.0", "255.255.255.0");
-  Ipv4InterfaceContainer i0e0r0 = ipv4.Assign (l0e0r0);
-
-  ipv4.SetBase ("10.1.2.0", "255.255.255.0");
-  Ipv4InterfaceContainer i1e0r1 = ipv4.Assign (l1e0r1);
 
   ipv4.SetBase ("10.1.3.0", "255.255.255.0");
-  Ipv4InterfaceContainer i2e0r2 = ipv4.Assign (l2e0r2);
-
-  ipv4.SetBase ("10.1.5.0", "255.255.255.0");
-
-  Ipv4InterfaceContainer i4e0h0 = ipv4.Assign (l4e0h0);
-
-  ipv4.SetBase ("10.1.6.0", "255.255.255.0");
-  Ipv4InterfaceContainer i5r0h1 = ipv4.Assign (l5r0h1);
-
-  ipv4.SetBase ("10.1.7.0", "255.255.255.0");
-  Ipv4InterfaceContainer i6r1h1 = ipv4.Assign (l6r1h1);
-
-  ipv4.SetBase ("10.1.8.0", "255.255.255.0");
-  Ipv4InterfaceContainer i7r2h1 = ipv4.Assign (l7r2h1);
+  Ipv4InterfaceContainer i4e0h0 = ipv4.Assign (ch4e0h0);
 
   //Attach the UEs to an eNB. This will configure each UE according to the eNB configuration, and create an RRC connection between them:
 
@@ -160,7 +152,7 @@ main (int argc, char *argv[])
   //Create bulk send Application
 
   BulkSendHelper source ("ns3::TcpSocketFactory",
-                         InetSocketAddress (Ipv4Address ("10.1.8.1"), port));
+                         InetSocketAddress (Ipv4Address ("10.1.1.1"), port));
   source.SetAttribute ("MaxBytes", UintegerValue (maxBytes));
 
   ApplicationContainer sourceApps;
@@ -188,10 +180,12 @@ main (int argc, char *argv[])
   //NodeContainer for spine switches
   anim.SetConstantPosition (host.Get (0), 25.0, 0.0);
   anim.SetConstantPosition (enb.Get (0), 25.0, 10.0);
-  anim.SetConstantPosition (relay.Get (0), 0.0, 20.0);
-  anim.SetConstantPosition (relay.Get (1), 25.0, 20.0);
-  anim.SetConstantPosition (relay.Get (2), 50.0, 20.0);
   anim.SetConstantPosition (host.Get (1), 25.0, 50.0);
+  for (size_t i = 0; i < activeRelays; i++)
+    {
+      int x = i * 10;
+      anim.SetConstantPosition (relay.Get (i), x, 20.0);
+    }
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   //Output config store to txt format

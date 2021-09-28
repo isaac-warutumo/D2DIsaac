@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "ctime": "cpp"
-    }
+        "ctime": "cpp",
+        "string_view": "cpp"
+    },
+    "cmake.configureOnOpen": true
 }

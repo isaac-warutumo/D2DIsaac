@@ -8,8 +8,13 @@ int Cluster::GenerateClusterNodes(){
     return nNodes;
 }
 
-int Cluster::GenerateActiveRelays(int cNodes) {
+int Cluster::GenerateActiveRelays(size_t cNodes) {
     srand(time(0));
-    int activeRelay= 1 + (rand() % (cNodes));
+    size_t activeRelay= 1 + (rand() % (cNodes));
+    
+    if (activeRelay>=4)
+    {
+        activeRelay = 4;
+    }
     return activeRelay;
 }

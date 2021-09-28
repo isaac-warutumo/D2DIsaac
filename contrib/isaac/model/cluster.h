@@ -7,10 +7,10 @@
 
 class Cluster
 {
-  int nNodes;
+  size_t nNodes;
 
 public:
-  int GenerateClusterNodes ();
-  int GenerateActiveRelays (int cNodes);
+  size_t GenerateClusterNodes ();
+  size_t GenerateActiveRelays (size_t cNodes);
 };
 #endif // Cluster_h
